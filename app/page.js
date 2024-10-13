@@ -1,101 +1,104 @@
+'use client'
+import { useState } from "react";
 import Image from "next/image";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+const ShokhakButton = (props)=>{
+  return(
+    <div class='' onMouseEnter={props.onClick} >
+    <button
+            onClick={props.onClick}
+            className={`rounded-full flex items-center justify-center border h-12 w-32  transition-all ${props.pos} `}
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          {props.text}
+          </button>
+    </div>
+  )
+}
+
+
+export default function Home() {
+  const [pos, setPos] = useState(1)
+  const [clicked, setClicked] = useState()
+  const posList = [1,2,3]
+
+  const ChangeClickStatus = ()=>{
+    setClicked(!clicked)
+  }
+
+  const excludeFromList = (list, value)=>{
+    const newList = []
+    for (let index = 0; index < list.length; index++) {
+      const element = list[index];
+      if(element !== value){
+        newList.push(element)
+      }
+    }
+    return newList
+  }
+
+  const Choose = (list)=>{
+    const value = Math.floor(Math.random() * (1 - 0 + 1) ) + 0
+    return list[value];
+  }
+
+
+  const changePos = () =>{
+    console.log(pos)
+    const range = Math.random() * (3 - 1) + 1
+    const newRange = excludeFromList(posList, pos)
+    const value = Choose(newRange)
+    console.log(value)
+    setPos(value)
+  }
+
+  return (
+    <div className="h-screen w-screen flex items-center justify-center ">
+      <div className="flex flex-col gap-8 items-center h-[300px]">
+
+        <p class='text-center w-full text-[16px]'>Do You Want A Peice Of Me ???</p>
+        <Image height={500} width={500} class='h-[200px] w-[300px]' src={'/200-245130080.gif'}/>
+
+        <div className="gap-4 items-center flex flex-col sm:flex-row ">
+          <button
+            onClick={ChangeClickStatus}
+            className="rounded-full flex items-center justify-center border gap-2  h-12  w-32 hover:bg-white hover:text-black transition-all "
           >
-            Read our docs
-          </a>
+            Yes
+          </button>
+          {
+          pos === 1 ? 
+          <ShokhakButton text={"No"} onClick={changePos}/>
+          : 
+          <div class='h-12  w-32'>
+          </div>
+        }
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {
+          pos === 2 ? 
+          <ShokhakButton text={"No"} onClick={changePos} pos={'absolute left-[15%] bottom-[7%] '}/>
+          : 
+          ''
+        }
+        {
+          pos === 3 ? 
+          <ShokhakButton text={"No"} onClick={changePos} pos={'absolute right-[10%] top-[14%]'}/>
+          : 
+          ''
+        }
+
+          {
+            clicked ?
+            <div className="px-4 text-center">
+            <p>Hello you have achived what you wanted !!!</p>
+          </div>
+          :
+          ''
+
+          }
+      </div>
     </div>
   );
 }
