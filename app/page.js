@@ -21,7 +21,7 @@ const ShokhakButton = (props)=>{
               right: Math.round(right)+'%',
               top: Math.round(top)+'%'
             }}
-            className={`rounded-full flex items-center justify-center border h-12 w-32  transition-all `}
+            className={`rounded-full flex items-center justify-center bg-white text-black border border h-12 w-32  transition-all `}
           >
           {props.text}
           </button>
@@ -36,7 +36,7 @@ export default function Home() {
   const [timer, setTimer] = useState(false)
 
   const ChangeClickStatus = ()=>{
-    setClicked(!clicked)
+    setClicked(true)
   }
 
   const ChangeToPos = ()=>{
@@ -68,7 +68,7 @@ export default function Home() {
         <div className="gap-4 items-center flex flex-col sm:flex-row ">
           <button
             onClick={ChangeClickStatus}
-            className="rounded-full flex items-center justify-center border gap-2  h-12  w-32 hover:bg-white hover:text-black transition-all "
+            className="rounded-full flex items-center justify-center bg-white text-black gap-2  h-12  w-32 hover:bg-blue-500 hover:text-white border transition-all "
           >
             Yes
           </button>
@@ -82,7 +82,7 @@ export default function Home() {
         </div>
           {
             clicked ?
-            <div className="px-4 text-center">
+            <div className="px-4 text-[17px] font-medium text-center absolute bottom-0 w-full pb-5">
             <p>Hello you have achived what you wanted !!!</p>
           </div>
           :
