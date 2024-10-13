@@ -1,14 +1,27 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 
 const ShokhakButton = (props)=>{
+  const [right, setRight] = useState()
+  const [top, setTop] = useState()
+
+  useEffect(()=>{
+    setRight(props.pos.right)
+    setTop(props.pos.top)
+  },[props.pos])
+
   return(
-    <div class='' onMouseEnter={props.onClick} >
+    <div class='' onMouseEnter={props.onClick} onMouseOver={props.onClick} >
     <button
             onClick={props.onClick}
-            className={`rounded-full flex items-center justify-center border h-12 w-32  transition-all ${props.pos} `}
+            style={{
+              position: props.pos.right ? 'absolute' : 'relative',
+              right: Math.round(right)+'%',
+              top: Math.round(top)+'%'
+            }}
+            className={`rounded-full flex items-center justify-center border h-12 w-32  transition-all `}
           >
           {props.text}
           </button>
@@ -18,39 +31,32 @@ const ShokhakButton = (props)=>{
 
 
 export default function Home() {
-  const [pos, setPos] = useState(1)
+  const [pos, setPos] = useState(false)
   const [clicked, setClicked] = useState()
-  const posList = [1,2,3]
+  const [timer, setTimer] = useState(false)
 
   const ChangeClickStatus = ()=>{
     setClicked(!clicked)
   }
 
-  const excludeFromList = (list, value)=>{
-    const newList = []
-    for (let index = 0; index < list.length; index++) {
-      const element = list[index];
-      if(element !== value){
-        newList.push(element)
-      }
-    }
-    return newList
+  const ChangeToPos = ()=>{
+    const rightRange = Math.random() * (50 - 3) + 3
+    const topRange = Math.random() * (85 - 5) + 5
+    return { 'right': rightRange, 'top' : topRange}
   }
 
-  const Choose = (list)=>{
-    const value = Math.floor(Math.random() * (1 - 0 + 1) ) + 0
-    return list[value];
+  const ChangePos = () =>{
+    setPos(ChangeToPos())
   }
 
+  useEffect(()=>{
+    setTimeout(() => {
+      ChangePos()
+      setTimer(!timer)
+    }, 400);
 
-  const changePos = () =>{
-    console.log(pos)
-    const range = Math.random() * (3 - 1) + 1
-    const newRange = excludeFromList(posList, pos)
-    const value = Choose(newRange)
-    console.log(value)
-    setPos(value)
-  }
+  },[timer])
+
 
   return (
     <div className="h-screen w-screen flex items-center justify-center ">
@@ -66,29 +72,14 @@ export default function Home() {
           >
             Yes
           </button>
+          <ShokhakButton pos={pos} text={"No"} onClick={ChangePos}/>
           {
-          pos === 1 ? 
-          <ShokhakButton text={"No"} onClick={changePos}/>
-          : 
-          <div class='h-12  w-32'>
-          </div>
-        }
-
+            pos ?
+            <div class='h-12 w-32'/>
+            :
+            ''
+          }
         </div>
-
-        {
-          pos === 2 ? 
-          <ShokhakButton text={"No"} onClick={changePos} pos={'absolute left-[15%] bottom-[7%] '}/>
-          : 
-          ''
-        }
-        {
-          pos === 3 ? 
-          <ShokhakButton text={"No"} onClick={changePos} pos={'absolute right-[10%] top-[14%]'}/>
-          : 
-          ''
-        }
-
           {
             clicked ?
             <div className="px-4 text-center">
@@ -96,7 +87,6 @@ export default function Home() {
           </div>
           :
           ''
-
           }
       </div>
     </div>
